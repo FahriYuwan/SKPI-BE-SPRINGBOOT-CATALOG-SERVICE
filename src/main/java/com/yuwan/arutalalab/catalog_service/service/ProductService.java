@@ -1,9 +1,11 @@
 package com.yuwan.arutalalab.catalog_service.service;
 
+import com.yuwan.arutalalab.catalog_service.dto.ProductRequest;
 import com.yuwan.arutalalab.catalog_service.dto.ProductResponse;
 import com.yuwan.arutalalab.catalog_service.entity.Product;
 import com.yuwan.arutalalab.catalog_service.repository.ProductRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,11 +18,11 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponse addProduct(Product product) {
+    public ProductResponse addProduct(@Valid ProductRequest product) {
         if (productRepository.findBySku(product.getSku()).isEmpty()) {
             productRepository.save(product);
         }else{
-            System.out.println("SKU sudah digunakan, gunakan SKU lain");
+            throw new RuntimeException("SKU sudah terdaftar: " + request.getSku());
         }
 
         ProductResponse productResponse = new ProductResponse();
@@ -36,10 +38,10 @@ public class ProductService {
             if(productRepository.findBySku(product.getSku()).isEmpty()) {
                 productRepository.save(product);
             }else{
-                System.out.println("SKU sudah digunakan, gunakan SKU lain");
+                throw new RuntimeException("SKU sudah terdaftar: " + request.getSku());
             }
         }else{
-            System.out.println("Produk yang Anda cari tidak ditemukan");
+            throw new RuntimeException("Produk yang Anda cari tidak ditemukan");
         }
         ProductResponse productResponse = new ProductResponse();
         productResponse.setId(product.getId());
