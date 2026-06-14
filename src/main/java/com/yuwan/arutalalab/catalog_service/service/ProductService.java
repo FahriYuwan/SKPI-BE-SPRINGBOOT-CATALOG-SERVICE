@@ -21,9 +21,53 @@ public class ProductService {
             productRepository.save(product);
         }else{
             System.out.println("SKU sudah digunakan, gunakan SKU lain");
-
         }
 
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(product.getId());
+        productResponse.setName(product.getName());
+        productResponse.setPrice(product.getPrice());
+        return productResponse;
+    }
+
+    @Transactional
+    public ProductResponse updateProduct(Product product) {
+        if(productRepository.existsById(product.getId())){
+            if(productRepository.findBySku(product.getSku()).isEmpty()) {
+                productRepository.save(product);
+            }else{
+                System.out.println("SKU sudah digunakan, gunakan SKU lain");
+            }
+        }else{
+            System.out.println("Produk yang Anda cari tidak ditemukan");
+        }
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(product.getId());
+        productResponse.setName(product.getName());
+        productResponse.setPrice(product.getPrice());
+        return productResponse;
+    }
+
+    @Transactional
+    public ProductResponse deleteProduct(Product product) {
+        if(productRepository.existsById(product.getId())) {
+            productRepository.deleteById(product.getId());
+        }else{
+            System.out.println("Produk yang Anda cari tidak ditemukan");
+        }
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(product.getId());
+        productResponse.setName(product.getName());
+        productResponse.setPrice(product.getPrice());
+        return productResponse;
+    }
+
+    public ProductResponse getProduct(Product product) {
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(product.getId());
+        productResponse.setName(product.getName());
+        productResponse.setPrice(product.getPrice());
+        return productResponse;
     }
 
 }
