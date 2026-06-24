@@ -14,7 +14,9 @@ public class ProductResponse {
 
     private UUID id;
     private String name;
+    private String sku;
     private BigDecimal price;
+    private int stock;
     private Product.ProductStatus status;
 
 }
