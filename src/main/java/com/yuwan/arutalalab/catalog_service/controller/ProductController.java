@@ -34,6 +34,12 @@ public class ProductController {
                 .body(productResponse);
     }
 
+    //Menampilkan semua produk
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> getAllProducts(){
+        return ResponseEntity.ok(productService.getAllProducts());
+    }
+
     //Memperbarui stok produk
     @PutMapping("/{id}/stock")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable UUID id, @Valid @RequestBody UpdateStockRequest request){
